@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Container, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import Post from './Post';
-import { useNavigate ,useLocation} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 const User = () => {
     const [users, setUsers] = useState([]);
     const [click, setClick] = useState('')
     let navigate = useNavigate();
     let location = useLocation();
-console.log(location)
+    console.log(location)
+    const str = location.search
+    const lastChars = str.slice(-1);
+   // setClick(lastChars)
+    console.log(lastChars)
     const getData = () => {
         axios
             .get("https://jsonplaceholder.typicode.com/users")
@@ -20,10 +24,13 @@ console.log(location)
         getData();
     }, []);
 
-    const change=(i)=>{
+    const change = (i) => {
         navigate('/posts?usersId=' + i)
-        console.log(location.search)
-        
+
+
+
+
+
         setClick(i)
     }
     return (
@@ -37,7 +44,7 @@ console.log(location)
                         {
                             users && users.map((item) => {
                                 return <DropdownItem key={item.id}>
-                                 <option value={item.id} onClick={() =>change(item.id) }>{item.name}</option>
+                                    <option value={item.id} onClick={() => change(item.id)}>{item.name}</option>
                                 </DropdownItem>
                             })
                         }
@@ -47,7 +54,7 @@ console.log(location)
                 <div>
                     <h2 style={{ paddingTop: 50 }}> Choose a user and see post's</h2>
                     {
-                        click ==''? <p>You have not selected option . Select option ! </p>:<></>
+                        click == '' ? <p>You have not selected option . Select option ! </p> : <></>
                     }
                     <Post dataId={click} />
                 </div>
